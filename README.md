@@ -45,7 +45,7 @@ like this on the page:
 Or have them included on the server side like:
 ```js
 webhandle.routers.preDynamic.use((req, res, next) => {
-	manager.addExternalResources(res.locals.externalResourceManager)
+	managerMaterialIcons.addExternalResources(res.locals.externalResourceManager)
 	next()
 })
 
@@ -80,4 +80,15 @@ Or with a script tag on page like:
 
 ```html
 <script type="module" src="/@webhandle/material-icons/files/js/load-styles.mjs"></script>
+```
+
+### Configuration 
+
+```json
+{
+	"@webhandle/material-icons": {
+		"publicFilesPrefix": "/@webhandle/material-icons/files"
+		, "provideResources": true
+	}
+}
 ```

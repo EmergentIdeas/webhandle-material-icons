@@ -4,10 +4,6 @@ import path from "node:path"
 
 let initializeWebhandleComponent = createInitializeWebhandleComponent()
 
-function toBase64(ab) {
-	const b64 = (typeof ab === 'string') ? btoa(ab) : btoa(String.fromCharCode(...new Uint8Array(ab)));
-	return b64
-}
 
 initializeWebhandleComponent.componentName = '@webhandle/material-icons'
 initializeWebhandleComponent.componentDir = import.meta.dirname
@@ -37,15 +33,6 @@ initializeWebhandleComponent.setup = async function(webhandle, config) {
 
 		let resource = {
 			mimeType: 'application/javascript'
-			, url: config.publicFilesPrefix + '/css/material-icons.css'
-			, name: '@webhandle/material-icons/css'
-			, resourceType: 'module'
-			, cachable: webhandle.development ? false : true
-		}
-		externalResourceManager.provideResource(resource)
-
-		resource = {
-			mimeType: 'application/javascript'
 			, url: config.publicFilesPrefix + '/js/load.mjs'
 			, name: '@webhandle/material-icons'
 			, resourceType: 'module'
@@ -53,21 +40,18 @@ initializeWebhandleComponent.setup = async function(webhandle, config) {
 		}
 		externalResourceManager.provideResource(resource)
 
-		let content = `export default ${JSON.stringify(config)}`
-		let url = `data:text/javascript;charset=utf-8;base64,${toBase64(content)}`
 		resource = {
 			mimeType: 'application/javascript'
-			, url: url
 			, name: '@webhandle/material-icons/configuration'
 			, resourceType: 'module'
 			, cachable: webhandle.development ? false : true
+			, data: {publicFilesPrefix: config.publicFilesPrefix}
 		}
 		externalResourceManager.provideResource(resource)
 	}
 	
 	if(config.provideResources) {
 		webhandle.routers.preDynamic.use((req, res, next) => {
-			
 			manager.provideExternalResources(res.locals.externalResourceManager)
 			next()
 		})
