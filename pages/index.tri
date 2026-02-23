@@ -1,0 +1,11 @@
+__::start__
+
+<div class="material-icons">face</div>
+
+<script type="module">
+	import {loadMaterialIcons} from "@webhandle/material-icons"
+
+	await loadMaterialIcons()
+
+</script>
+__::end__
