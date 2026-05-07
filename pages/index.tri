@@ -1,5 +1,5 @@
 __::start__
-
+__::@webhandle/material-icons/renderExternalResources__
 <div class="material-icons">face</div>
 
 <script type="module">

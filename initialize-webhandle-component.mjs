@@ -9,7 +9,7 @@ initializeWebhandleComponent.componentName = '@webhandle/material-icons'
 initializeWebhandleComponent.componentDir = import.meta.dirname
 initializeWebhandleComponent.defaultConfig = {
 	"publicFilesPrefix": "/@webhandle/material-icons/files"
-	, "provideResources": true
+	, "provideResources": false
 }
 initializeWebhandleComponent.staticFilePaths = ['public']
 initializeWebhandleComponent.templatePaths = ['views']
@@ -17,17 +17,6 @@ initializeWebhandleComponent.templatePaths = ['views']
 initializeWebhandleComponent.setup = async function(webhandle, config) {
 	let manager = new ComponentManager()
 	manager.config = config
-
-	manager.addExternalResources = function(externalResourceManager) {
-		let resource = {
-			mimeType: 'text/css'
-			, url: config.publicFilesPrefix + '/css/material-icons.css'
-			, name: '@webhandle/material-icons/css'
-			, cachable: webhandle.development ? false : true
-		}
-		externalResourceManager.includeResource(resource)
-
-	}
 
 	manager.provideExternalResources = function(externalResourceManager) {
 
@@ -49,6 +38,33 @@ initializeWebhandleComponent.setup = async function(webhandle, config) {
 		}
 		externalResourceManager.provideResource(resource)
 	}
+
+	manager.addExternalResources = function(externalResourceManager) {
+		let resource = {
+			mimeType: 'text/css'
+			, url: config.publicFilesPrefix + '/css/material-icons.css'
+			, name: '@webhandle/material-icons/css'
+			, cachable: webhandle.development ? false : true
+		}
+		externalResourceManager.includeResource(resource)
+		manager.provideExternalResources(externalResourceManager)
+	}
+
+
+	webhandle.addTemplate(initializeWebhandleComponent.componentName + '/addExternalResources', (data) => {
+		let externalResourceManager = initializeWebhandleComponent.getExternalResourceManager(data)
+		manager.addExternalResources(externalResourceManager)
+	})
+	webhandle.addTemplate(initializeWebhandleComponent.componentName + '/provideExternalResources', (data) => {
+		let externalResourceManager = initializeWebhandleComponent.getExternalResourceManager(data)
+		manager.provideExternalResources(externalResourceManager)
+	})
+
+	webhandle.addTemplate(initializeWebhandleComponent.componentName + '/renderExternalResources', (data) => {
+		let externalResourceManager = initializeWebhandleComponent.getExternalResourceManager(data)
+		manager.addExternalResources(externalResourceManager)
+		return externalResourceManager.render()
+	})
 	
 	if(config.provideResources) {
 		webhandle.routers.preDynamic.use((req, res, next) => {

@@ -32,7 +32,13 @@ import setupMaterialIcons from "@webhandle/material-icons/initialize-webhandle-c
 let managerMaterialIcons = await setupMaterialIcons(webhandle)
 ```
 
-This will provide resources on every request by default. To actuall use the styles and icons, you have to either do something
+You have indicate you want the resources either by calling `addExternalResources` on the manager or in the html like
+
+```html
+__::@webhandle/material-icons/renderExternalResources__
+```
+
+To actually use the styles and icons, you have to either do something
 like this on the page:
 
 ```html
